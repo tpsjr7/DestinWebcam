@@ -7,8 +7,6 @@
 #IncludeRegexTransform: 
 
 /home/dickson/Desktop/DestinWebcam/DestinWebcam.cpp
-iostream
--
 opencv2/core/core.hpp
 -
 opencv2/highgui/highgui.hpp
@@ -66,6 +64,8 @@ stdexcept
 vector
 -
 fstream
+-
+math.h
 -
 
 /home/dickson/Desktop/destin/Destin/Common/BeliefExporter.h

@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv/cv.h>
@@ -34,6 +32,8 @@
 #include <stdexcept>
 #include <vector>
 #include <fstream>
+
+#include <math.h>
 
 using namespace AL;
 using namespace std;
@@ -246,36 +246,60 @@ void processWebcam()
     while(vs.grab()){
 
         frameCount++;
-        cout << frameCount << endl;
 
         t.setSource(vs.getOutput());
         t.transport(); //move video from host to card
         testNan(t.getDest(), 512*512);
 
-        network->doDestin(t.getDest());
+        float *beliefsTrain;
+        float *beliefsTest;
+        uint size = featureExtractor->getOutputSize();
 
-        if(frameCount==1000)
+        network->doDestin(t.getDest());
+        int frame=1000;
+
+        if (frameCount<frame){cout << frameCount << endl;}
+
+        else if(frameCount==frame)
         {
             // Stop training
             network->isTraining(false);
-            //for (int i=0;i<nLayers;i++) network->setLayerIsTraining(i, false);
+            for (int i=0;i<nLayers;i++) network->setLayerIsTraining(i, false);
 
-            // Extract features of training scene
-            featureExtractor->writeBeliefToMat("trainOutput.txt");
-            cout.flush();
+            // Extract features/belief of training scene
+            beliefsTrain = featureExtractor->getBeliefs();
+            featureExtractor->writeBeliefToMat("TrainingOutput.txt");
+
+//            // Printing the beliefs
+//            for(int i=0;i<=size;i++){
+//                cout << beliefsTrain[i]<< endl;
+//            }
+
         }
 
-        else if (frameCount>1000)
+        else if (frameCount>frame)
         {
+
             // Extract features of testing scene
-            //cout<<"Testing Phase"<<endl;
-            featureExtractor->writeBeliefToMat("testOutput.txt");
-            cout.flush();
+            beliefsTest = featureExtractor->getBeliefs();
+            featureExtractor->writeBeliefToMat("TestingOutput.txt");
+
+            // Compare beliefs
+            int sum;
+            for(int i=0;i<=size;i++){
+                sum = pow( (beliefsTest[i]-beliefsTrain[i]), 2);
+                cout<< "Training Belief " << i <<" : "<< beliefsTrain[i]<< endl;
+                cout<< "Testing Belief  " << i <<" : "<< beliefsTest[i]<< endl;
+            }
+            sum=sqrt(sum);
+            cout <<"Euclidean Distance: " << sum << endl;
 
 
 
-
-
+             // Printing the beliefs
+//            for(int i=0;i<=size;i++){
+//                cout << beliefsTest[i]<< endl;
+//            }
         }
 
 //        printf("\033[2J\033[1;1H");
@@ -294,12 +318,12 @@ void processWebcam()
 //            network->printBeliefGraph(l,0,0);
 //        }
 
-}
+    }
 }
 
 
-void showImages(const std::string& robotIp)
-{   /** Create a proxy to ALVideoDevice on the robot.*/
+void showImages(const std::string& robotIp){
+   /** Create a proxy to ALVideoDevice on the robot.*/
     ALVideoDeviceProxy camProxy(robotIp, 9559);
 
     /** Subscribe a client image requiring 320*240 and BGR colorspace.*/
