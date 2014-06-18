@@ -34,6 +34,9 @@
 #include <fstream>
 
 #include <math.h>
+#include <algorithm>
+#include <iterator>
+
 
 using namespace AL;
 using namespace std;
@@ -243,6 +246,10 @@ void processWebcam()
     vs.grab();//throw away first frame in case its garbage
     int frameCount = 0;
 
+    vector<float> TrainingBeliefs;
+    vector < vector<float> > TestingBeliefs;
+    vector <float> TestFrame;
+
     while(vs.grab()){
 
         frameCount++;
@@ -251,56 +258,85 @@ void processWebcam()
         t.transport(); //move video from host to card
         testNan(t.getDest(), 512*512);
 
-        float *beliefsTrain;
-        float *beliefsTest;
+        float *pbeliefsTrain;
+        float *pbeliefsTest;
+
+        int trainingFrame=1000;
+
         uint size = featureExtractor->getOutputSize();
 
         network->doDestin(t.getDest());
-        int frame=1000;
 
-        if (frameCount<frame){cout << frameCount << endl;}
 
-        else if(frameCount==frame)
+        if (frameCount<trainingFrame){cout << "[Training] " << frameCount << endl;}
+
+        else if(frameCount==trainingFrame)
         {
             // Stop training
-            network->isTraining(false);
+            //network->isTraining(false);
             for (int i=0;i<nLayers;i++) network->setLayerIsTraining(i, false);
 
             // Extract features/belief of training scene
-            beliefsTrain = featureExtractor->getBeliefs();
+            pbeliefsTrain = featureExtractor->getBeliefs();
             featureExtractor->writeBeliefToMat("TrainingOutput.txt");
 
-//            // Printing the beliefs
+            // Assinging beliefs into local vector
+            for(int i=0;i<=size;i++){
+                TrainingBeliefs.push_back(pbeliefsTrain[i]);
+            }
+
+
+
+            // Printing the vector values, just to confirm
 //            for(int i=0;i<=size;i++){
-//                cout << beliefsTrain[i]<< endl;
+//                cout << TrainingBeliefs[i] << " ";
 //            }
 
         }
 
-        else if (frameCount>frame)
+        else if (frameCount>trainingFrame)
         {
 
             // Extract features of testing scene
-            beliefsTest = featureExtractor->getBeliefs();
+            pbeliefsTest = featureExtractor->getBeliefs();
             featureExtractor->writeBeliefToMat("TestingOutput.txt");
 
-            // Compare beliefs
-            int sum;
+            // Assinging beliefs into local vector
             for(int i=0;i<=size;i++){
-                sum = pow( (beliefsTest[i]-beliefsTrain[i]), 2);
-                cout<< "Training Belief " << i <<" : "<< beliefsTrain[i]<< endl;
-                cout<< "Testing Belief  " << i <<" : "<< beliefsTest[i]<< endl;
+                TestFrame.push_back(pbeliefsTest[i]);
+                TestingBeliefs.push_back(TestFrame);  // TestFrame starts from 0
             }
-            sum=sqrt(sum);
-            cout <<"Euclidean Distance: " << sum << endl;
+
+//            for(int testframe = trainingFrame; testframe<frameCount ; testframe++){
+//                for(int i=0;i<=size;i++){
+//                    cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
+//                }
+//            }
 
 
+             //Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j]. // j is the testframe i is the belief value number
 
-             // Printing the beliefs
+            float sum, sumCurrent;
+            for(int testframe = trainingFrame; testframe<=frameCount ; testframe++){
+
+                for(int i=0;i<=size;i++){
+                    sumCurrent = pow( (TrainingBeliefs[i]-TestingBeliefs[i][testframe]), 2);
+                    //cout<< "Training Belief " << i <<" : "<< TrainingBeliefs[i] << endl;
+                    //cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
+                    if (i==0) sum=sumCurrent;
+                    else sum=sum+sumCurrent;
+                }
+                sum=sqrt(sum);
+                cout <<"Euclidean Distance: " << sum << endl;
+
+            }
+        }
+
+//              Printing the beliefs
 //            for(int i=0;i<=size;i++){
 //                cout << beliefsTest[i]<< endl;
 //            }
-        }
+
 
 //        printf("\033[2J\033[1;1H");
 
@@ -318,7 +354,9 @@ void processWebcam()
 //            network->printBeliefGraph(l,0,0);
 //        }
 
+
     }
+    delete network;
 }
 
 
@@ -395,6 +433,7 @@ int main(int argc, char ** argv)
     {
         std::cerr << "Caught exception " << e.what() << std::endl;
     }
+
 
     return 0;
 }

@@ -67,6 +67,10 @@ fstream
 -
 math.h
 -
+algorithm
+-
+iterator
+-
 
 /home/dickson/Desktop/destin/Destin/Common/BeliefExporter.h
 vector
