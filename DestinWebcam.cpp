@@ -42,7 +42,7 @@ using namespace AL;
 using namespace std;
 using namespace cv;
 
-const std::string robotIp="192.168.0.109";
+const std::string robotIp="192.168.0.104";
 
 //*************************Destin Functions******************************************
 
@@ -143,7 +143,11 @@ void process(const std::string & robotIp)
 
     /* init destin network end */
 
-    int framecount=0;
+    int frameCount=0;
+
+    vector<float> TrainingBeliefs;
+    vector < vector<float> > TestingBeliefs;
+    vector <float> TestFrame;
 
     /** Main loop. Exit when pressing ESC.*/
     while ((char) cv::waitKey(30) != 27)
@@ -151,6 +155,8 @@ void process(const std::string & robotIp)
         ALValue img = camProxy.getImageRemote(clientName);
         imgHeader.data = (uchar*) img[6].GetBinary();
         camProxy.releaseImage(clientName);
+
+        frameCount++;
 
         /* destin processing */
 
@@ -161,64 +167,121 @@ void process(const std::string & robotIp)
 
         float * float_image=callImage(image);
 
+        float *pbeliefsTrain;
+        float *pbeliefsTest;
+
+        int trainingFrame=1000;  // number of frames for training
+
+        uint size = featureExtractor->getOutputSize();
+
         // feed in destin
         network->doDestin(float_image);
 
-        if (framecount==10)
+        if (frameCount<trainingFrame){cout << "[Training] " << frameCount << endl;}
+
+        else if(frameCount==trainingFrame)
         {
-            // stop training
-            network->isTraining(false);
-            // record feature for current frame using BeliefExporter
-               // BelifExporter
-            //featureExtractor->writeBeliefToDisk(1, "result/destin_features/trainOutput.txt");
-            featureExtractor->writeBeliefToMat("~/trainingOutput.txt");
-            //cout << "Saved training features" << endl;
-            cout.flush();
+            // Stop training
+            //network->isTraining(false);
+            for (int i=0;i<nLayers;i++) network->setLayerIsTraining(i, false);
 
-        }
-        else if (framecount>200)  // this will be the testing phase
-        {
-            // extract feature here
-            //featureExtractor->writeBeliefToMat("~/testingOutput.txt");
-            cout << "Saved testing features" << endl;
+            // Extract features/belief of training scene
+            pbeliefsTrain = featureExtractor->getBeliefs();
+            featureExtractor->writeBeliefToMat("TrainingOutput.txt");
 
-            // calcluate similarity
-
-            // if feature is similar enough
-            //if(){}
-            // robot stand up
-            //else{}
-            // else robot sit down
+            // Assinging beliefs into local vector
+            for(int i=0;i<=size;i++){
+                TrainingBeliefs.push_back(pbeliefsTrain[i]);
+            }
         }
 
+        else if (frameCount>trainingFrame)
+        {
+
+            // Extract features of testing scene
+            pbeliefsTest = featureExtractor->getBeliefs();
+            featureExtractor->writeBeliefToMat("TestingOutput.txt");
+
+            // Assinging beliefs into local vector
+            for(int i=0;i<=size;i++){
+                TestFrame.push_back(pbeliefsTest[i]);
+                TestingBeliefs.push_back(TestFrame);  // TestFrame starts from 0
+            }
+
+            //Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j]. //i is the belief value number j is the testframe
+
+            float sum, sumCurrent;
+            for(int testframe = trainingFrame; testframe<=frameCount ; testframe++){
+
+                for(int i=0;i<=size;i++){
+                    sumCurrent = pow( (TrainingBeliefs[i]-TestingBeliefs[i][testframe]), 2);
+                    //cout<< "Training Belief " << i <<" : "<< TrainingBeliefs[i] << endl;
+                    //cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
+                    if (i==0) sum=sumCurrent;
+                    else sum=sum+sumCurrent;
+                }
+                sum=sqrt(sum);
+                cout << testframe <<" Euclidean Distance: " << sum << endl;
+
+            }
+            // Swapping with an empty dummy vector frees up memory. TestFrame.clear() doesnt.
+            vector<float>dummyvector;
+            TestFrame.swap(dummyvector);
+        }
+
+
+        //        if (framecount==10)
+        //        {
+        //            // stop training
+        //            network->isTraining(false);
+        //            // record feature for current frame using BeliefExporter
+        //               // BelifExporter
+        //            //featureExtractor->writeBeliefToDisk(1, "result/destin_features/trainOutput.txt");
+        //            featureExtractor->writeBeliefToMat("~/trainingOutput.txt");
+        //            //cout << "Saved training features" << endl;
+        //            cout.flush();
+
+        //        }
+        //        else if (framecount>200)  // this will be the testing phase
+        //        {
+        //            // extract feature here
+        //            //featureExtractor->writeBeliefToMat("~/testingOutput.txt");
+        //            cout << "Saved testing features" << endl;
+
+        //            // calcluate similarity
+
+        //            // if feature is similar enough
+        //            //if(){}
+        //            // robot stand up
+        //            //else{}
+        //            // else robot sit down
+        //        }
 
 
 
 
-// output result
 
-//        printf("\033[2J\033[1;1H");
+        // output result
 
-//        printFPS(true);
-//        int layer = 6; // Original: 1
-//        Node & n = *network->getNode(layer,0,0);
-//        printf("Node %i,0,0 winner: %i\n",layer, n.winner);
-//        printf("Node centroids: %i\n", n.nb);
+        //        printf("\033[2J\033[1;1H");
 
-//        printf("layer %i node 0 centroid locations:\n", layer);
-//        network->printNodeCentroidPositions(layer, 0, 0);
-//        for(int l = 0 ; l < 6 ; l++){
-//            printf("belief graph layer: %i\n",l);
-//            network->printBeliefGraph(l,0,0);
-//        }
+        //        printFPS(true);
+        //        int layer = 6; // Original: 1
+        //        Node & n = *network->getNode(layer,0,0);
+        //        printf("Node %i,0,0 winner: %i\n",layer, n.winner);
+        //        printf("Node centroids: %i\n", n.nb);
+
+        //        printf("layer %i node 0 centroid locations:\n", layer);
+        //        network->printNodeCentroidPositions(layer, 0, 0);
+        //        for(int l = 0 ; l < 6 ; l++){
+        //            printf("belief graph layer: %i\n",l);
+        //            network->printBeliefGraph(l,0,0);
+        //        }
 
         /* destin processing end */
 
 
         cv::imshow("images", image);
-
-        cout<<"Framecount: "<<framecount<<endl;
-        framecount++;
     }
 
     /** Cleanup.*/
@@ -239,7 +302,6 @@ void processWebcam()
     int nLayers=7;
     DestinNetworkAlt * network = new DestinNetworkAlt(siw, nLayers, centroid_counts, isUniform);
     network->setFixedLearnRate(.1);
-
     BeliefExporter * featureExtractor=new BeliefExporter(*network, 5);
 
     Transporter t;
@@ -247,7 +309,7 @@ void processWebcam()
     int frameCount = 0;
 
     vector<float> TrainingBeliefs;
-    vector < vector<float> > TestingBeliefs;
+    vector < vector<float> > TestingBeliefs; // a multidimentional vector
     vector <float> TestFrame;
 
     while(vs.grab()){
@@ -261,7 +323,7 @@ void processWebcam()
         float *pbeliefsTrain;
         float *pbeliefsTest;
 
-        int trainingFrame=1000;
+        int trainingFrame=100;  // number of frames for training
 
         uint size = featureExtractor->getOutputSize();
 
@@ -284,14 +346,6 @@ void processWebcam()
             for(int i=0;i<=size;i++){
                 TrainingBeliefs.push_back(pbeliefsTrain[i]);
             }
-
-
-
-            // Printing the vector values, just to confirm
-//            for(int i=0;i<=size;i++){
-//                cout << TrainingBeliefs[i] << " ";
-//            }
-
         }
 
         else if (frameCount>trainingFrame)
@@ -303,20 +357,17 @@ void processWebcam()
 
             // Assinging beliefs into local vector
             for(int i=0;i<=size;i++){
-                TestFrame.push_back(pbeliefsTest[i]);
-                TestingBeliefs.push_back(TestFrame);  // TestFrame starts from 0
+                TestFrame.push_back(pbeliefsTest[i]); // push belief into vector
+                TestingBeliefs.push_back(TestFrame);  // testframe starts from 0  // Format ==> TestingBeliefs[i][testframe]
             }
 
-//            for(int testframe = trainingFrame; testframe<frameCount ; testframe++){
-//                for(int i=0;i<=size;i++){
-//                    cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
-//                }
-//            }
 
-
-             //Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j]. // j is the testframe i is the belief value number
-
+            // Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j].
+            // i is the belief value number j is the testframe
             float sum, sumCurrent;
+            int numReadings=7, k=0;
+            vector <float> euclidArr;
+            float euclidMeanSum=0;
             for(int testframe = trainingFrame; testframe<=frameCount ; testframe++){
 
                 for(int i=0;i<=size;i++){
@@ -326,34 +377,33 @@ void processWebcam()
                     if (i==0) sum=sumCurrent;
                     else sum=sum+sumCurrent;
                 }
-                sum=sqrt(sum);
-                cout <<"Euclidean Distance: " << sum << endl;
+                //implement a moving average filter here
+                float euclidDist=sqrt(sum);
 
+                euclidArr.push_back(euclidDist);
+                //cout << euclidArr[k]<< endl;
+                k++;
+
+                if(k==numReadings)
+                {
+                    for(int l=0;l<numReadings;l++)
+                    {
+                        euclidMeanSum= euclidMeanSum + euclidArr[l];
+                    }
+                    euclidMeanSum = euclidMeanSum/numReadings;
+                }
+
+                cout <<"Test frame number: "<< testframe <<" Euclidean Distance: " << euclidMeanSum << endl;
             }
+
+
+            // may be good to erase some data from vector to free some memory. testing. Seems to be working.
+            // Swapping with an empty dummy vector frees up memory. TestFrame.clear() doesnt.
+            vector<float>dummyvector;
+            TestFrame.swap(dummyvector);
+            euclidArr.swap(dummyvector);
+            //TestingBeliefs.swap(dummyvector2);
         }
-
-//              Printing the beliefs
-//            for(int i=0;i<=size;i++){
-//                cout << beliefsTest[i]<< endl;
-//            }
-
-
-//        printf("\033[2J\033[1;1H");
-
-//        printf("Frame: %i\n", frameCount);
-//        printFPS(true);
-//        int layer = 6; // Original: 1
-//        Node & n = *network->getNode(layer,0,0);
-//        printf("Node %i,0,0 winner: %i\n",layer, n.winner);
-//        printf("Node centroids: %i\n", n.nb);
-
-//        printf("layer %i node 0 centroid locations:\n", layer);
-//        network->printNodeCentroidPositions(layer, 0, 0);
-//        for(int l = 0 ; l < 6 ; l++){
-//            printf("belief graph layer: %i\n",l);
-//            network->printBeliefGraph(l,0,0);
-//        }
-
 
     }
     delete network;
@@ -361,7 +411,7 @@ void processWebcam()
 
 
 void showImages(const std::string& robotIp){
-   /** Create a proxy to ALVideoDevice on the robot.*/
+    /** Create a proxy to ALVideoDevice on the robot.*/
     ALVideoDeviceProxy camProxy(robotIp, 9559);
 
     /** Subscribe a client image requiring 320*240 and BGR colorspace.*/
@@ -414,15 +464,15 @@ void showImages(const std::string& robotIp){
 
 int main(int argc, char ** argv)
 {
-//    cv::Mat mat;
-//    mat=cv::imread("/home/dickson/img.jpg");
-//    cvNamedWindow("OpenCV in QT");
-//    cv:imshow("OpenCV in QT", mat);
-//    cvWaitKey(5000);
+    //    cv::Mat mat;
+    //    mat=cv::imread("/home/dickson/img.jpg");
+    //    cvNamedWindow("OpenCV in QT");
+    //    cv:imshow("OpenCV in QT", mat);
+    //    cvWaitKey(5000);
 
-//    AL::ALTextToSpeechProxy tts(robotIp, 9559);
-//    const std::string phraseToSay = "";
-//    tts.say(phraseToSay);
+    //    AL::ALTextToSpeechProxy tts(robotIp, 9559);
+    //    const std::string phraseToSay = "";
+    //    tts.say(phraseToSay);
 
     try
     {
