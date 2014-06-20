@@ -323,14 +323,16 @@ void processWebcam()
         float *pbeliefsTrain;
         float *pbeliefsTest;
 
-        int trainingFrame=100;  // number of frames for training
+        int trainingFrame=680;  // number of frames for training
 
         uint size = featureExtractor->getOutputSize();
 
+        //feed the video into the destin algorithm
         network->doDestin(t.getDest());
 
-
-        if (frameCount<trainingFrame){cout << "[Training] " << frameCount << endl;}
+        if (frameCount<trainingFrame){
+            cout << "[Training] " << frameCount << endl;
+        }
 
         else if(frameCount==trainingFrame)
         {
@@ -365,35 +367,23 @@ void processWebcam()
             // Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j].
             // i is the belief value number j is the testframe
             float sum, sumCurrent;
-            int numReadings=7, k=0;
-            vector <float> euclidArr;
-            float euclidMeanSum=0;
-            for(int testframe = trainingFrame; testframe<=frameCount ; testframe++){
+            for(int testingframe = trainingFrame; testingframe<frameCount ; testingframe++){
 
                 for(int i=0;i<=size;i++){
-                    sumCurrent = pow( (TrainingBeliefs[i]-TestingBeliefs[i][testframe]), 2);
+                    sumCurrent = pow( (TrainingBeliefs[i]-TestingBeliefs[i][testingframe]), 2);
                     //cout<< "Training Belief " << i <<" : "<< TrainingBeliefs[i] << endl;
                     //cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
                     if (i==0) sum=sumCurrent;
                     else sum=sum+sumCurrent;
                 }
-                //implement a moving average filter here
-                float euclidDist=sqrt(sum);
+                // This is the computer Eucliden Distance for ONE frame.
+                double euclidDist=sqrt(sum);
 
-                euclidArr.push_back(euclidDist);
-                //cout << euclidArr[k]<< endl;
-                k++;
+                // Calculate the euclidean similarities. Returns 0 if not similar , 1 if similar
+                double euclidSimilar=1/(1+euclidDist);
+                cout << euclidSimilar<< endl;
 
-                if(k==numReadings)
-                {
-                    for(int l=0;l<numReadings;l++)
-                    {
-                        euclidMeanSum= euclidMeanSum + euclidArr[l];
-                    }
-                    euclidMeanSum = euclidMeanSum/numReadings;
-                }
-
-                cout <<"Test frame number: "<< testframe <<" Euclidean Distance: " << euclidMeanSum << endl;
+//                cout <<"Test frame number: "<< testframe <<" Euclidean Distance: " << euclidMeanSum << endl;
             }
 
 
@@ -401,7 +391,7 @@ void processWebcam()
             // Swapping with an empty dummy vector frees up memory. TestFrame.clear() doesnt.
             vector<float>dummyvector;
             TestFrame.swap(dummyvector);
-            euclidArr.swap(dummyvector);
+            //euclidArr.swap(dummyvector);
             //TestingBeliefs.swap(dummyvector2);
         }
 
