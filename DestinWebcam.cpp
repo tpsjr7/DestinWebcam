@@ -291,7 +291,7 @@ void process(const std::string & robotIp)
 
 void processWebcam()
 {
-    //VideoSource vs(false, "/home/dickson/Desktop/destin/Destin/Misc/./Various.avi");
+    //VideoSource vs(false, "./Various.avi");
     VideoSource vs(true, "");
     vs.enableDisplayWindow();
     SupportedImageWidths siw = W256;
@@ -309,8 +309,13 @@ void processWebcam()
     int frameCount = 0;
 
     vector<float> TrainingBeliefs;
-    vector < vector<float> > TestingBeliefs; // a multidimentional vector
-    vector <float> TestFrame;
+
+//    vector < vector<float> > TestingBeliefs; // a 2d vector
+//    vector <float> TestFrame;
+    vector<vector<float> > TestingBeliefs;
+    vector<float>rowFrame;
+
+    int rowframe=0;                     // a variable to store into different rows each time in TestinBeliefs
 
     while(vs.grab()){
 
@@ -323,7 +328,7 @@ void processWebcam()
         float *pbeliefsTrain;
         float *pbeliefsTest;
 
-        int trainingFrame=680;  // number of frames for training
+        int trainingFrame= 1000;  //70-90 is ok // number of frames for training
 
         uint size = featureExtractor->getOutputSize();
 
@@ -357,42 +362,79 @@ void processWebcam()
             pbeliefsTest = featureExtractor->getBeliefs();
             featureExtractor->writeBeliefToMat("TestingOutput.txt");
 
-            // Assinging beliefs into local vector
-            for(int i=0;i<=size;i++){
-                TestFrame.push_back(pbeliefsTest[i]); // push belief into vector
-                TestingBeliefs.push_back(TestFrame);  // testframe starts from 0  // Format ==> TestingBeliefs[i][testframe]
+// OLD ASSIGN BELIEF
+//            // Assinging beliefs into local vector
+//            for(int i=0;i<=size;i++){
+//                TestFrame.push_back(pbeliefsTest[i]); // push belief into vector
+//                //TestingBeliefs.push_back(TestFrame);  // testframe starts from 0  // Format ==> TestingBeliefs[i][testframe]
+//            }
+
+            // Testing again assign. Format of storage => TestingBeliefs[frame_number][belief]
+            TestingBeliefs.push_back(rowFrame); // create one row for one more frame
+
+            for(int i=0; i<=size; i++){         // populate the created row
+                TestingBeliefs[rowframe].push_back(pbeliefsTest[i]);
             }
 
+            // Test to print the variables
+//            for(int frame=0; frame<=rowframe; frame++){
+//                for(int i=0; i<=size; i++){
+//                    cout << "TestingBeliefs["<< frame << "]"<<"["<<i<<"]: "<< TestingBeliefs[frame][i]<<endl;
+//                }
+//            }
 
-            // Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j].
-            // i is the belief value number j is the testframe
-            float sum, sumCurrent;
-            for(int testingframe = trainingFrame; testingframe<frameCount ; testingframe++){
 
-                for(int i=0;i<=size;i++){
-                    sumCurrent = pow( (TrainingBeliefs[i]-TestingBeliefs[i][testingframe]), 2);
-                    //cout<< "Training Belief " << i <<" : "<< TrainingBeliefs[i] << endl;
-                    //cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
-                    if (i==0) sum=sumCurrent;
-                    else sum=sum+sumCurrent;
+            // Compare the beliefs for training and testing for computing Euclidean Distance
+            float sumCurrent, cumulSum, euclidDist;
+            for(int row=0; row<=rowframe; row++){
+
+                for(int i=0; i<=size; i++){
+                    sumCurrent=pow( (TrainingBeliefs[i]-TestingBeliefs[row][i]),2);
+                    if(i==0)cumulSum=sumCurrent;
+                    else cumulSum=cumulSum+sumCurrent;
                 }
-                // This is the computer Eucliden Distance for ONE frame.
-                double euclidDist=sqrt(sum);
-
-                // Calculate the euclidean similarities. Returns 0 if not similar , 1 if similar
-                double euclidSimilar=1/(1+euclidDist);
-                cout << euclidSimilar<< endl;
-
-//                cout <<"Test frame number: "<< testframe <<" Euclidean Distance: " << euclidMeanSum << endl;
+                euclidDist=sqrt(cumulSum);
             }
 
+            // Calculate similarities of Euclidean Distance. 0 if not similar at all 1 if similar.
+            float euclidSim=1/(1+euclidDist);
+
+            cout << euclidSim << endl;
+
+            rowframe++;
+
+
+
+// OLD COMPARE
+            // OLD Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j].
+            // i is the belief value number j is the testframe
+//            float sum, sumCurrent;
+//            for(int testingframe = trainingFrame; testingframe<frameCount ; testingframe++){
+
+//                for(int i=0;i<=size;i++){
+//                    sumCurrent = pow( (TrainingBeliefs[i]-TestingBeliefs[i][testingframe]), 2);
+//                    //cout<< "Training Belief " << i <<" : "<< TrainingBeliefs[i] << endl;
+//                    //cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
+//                    if (i==0) sum=sumCurrent;
+//                    else sum=sum+sumCurrent;
+//                }
+//                // This is the computer Eucliden Distance for ONE frame.
+//                double euclidDist=sqrt(sum);
+
+//                // Calculate the euclidean similarities. Returns 0 if not similar , 1 if similar
+//                double euclidSimilar=1/(1+euclidDist);
+//                cout << euclidSimilar<< endl;
+
+////                cout <<"Test frame number: "<< testframe <<" Euclidean Distance: " << euclidMeanSum << endl;
+//            }
 
             // may be good to erase some data from vector to free some memory. testing. Seems to be working.
             // Swapping with an empty dummy vector frees up memory. TestFrame.clear() doesnt.
-            vector<float>dummyvector;
-            TestFrame.swap(dummyvector);
+            // vector<float>dummyvector;
+            //TestFrame.swap(dummyvector);
             //euclidArr.swap(dummyvector);
             //TestingBeliefs.swap(dummyvector2);
+
         }
 
     }
