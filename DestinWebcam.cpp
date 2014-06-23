@@ -146,8 +146,10 @@ void process(const std::string & robotIp)
     int frameCount=0;
 
     vector<float> TrainingBeliefs;
-    vector < vector<float> > TestingBeliefs;
-    vector <float> TestFrame;
+    vector<vector<float> > TestingBeliefs;
+    vector<float>rowFrame;
+
+    int rowframe=0;                     // a variable to store into different rows each time in TestinBeliefs
 
     /** Main loop. Exit when pressing ESC.*/
     while ((char) cv::waitKey(30) != 27)
@@ -170,14 +172,16 @@ void process(const std::string & robotIp)
         float *pbeliefsTrain;
         float *pbeliefsTest;
 
-        int trainingFrame=1000;  // number of frames for training
+        int trainingFrame=100;  // number of frames for training
 
         uint size = featureExtractor->getOutputSize();
 
         // feed in destin
         network->doDestin(float_image);
 
-        if (frameCount<trainingFrame){cout << "[Training] " << frameCount << endl;}
+        if (frameCount<trainingFrame){
+            cout << "[Training] " << frameCount << endl;
+        }
 
         else if(frameCount==trainingFrame)
         {
@@ -202,32 +206,82 @@ void process(const std::string & robotIp)
             pbeliefsTest = featureExtractor->getBeliefs();
             featureExtractor->writeBeliefToMat("TestingOutput.txt");
 
-            // Assinging beliefs into local vector
-            for(int i=0;i<=size;i++){
-                TestFrame.push_back(pbeliefsTest[i]);
-                TestingBeliefs.push_back(TestFrame);  // TestFrame starts from 0
+            // Testing again assign. Format of storage => TestingBeliefs[frame_number][belief]
+            TestingBeliefs.push_back(rowFrame); // create one row for one more frame
+
+            for(int i=0; i<=size; i++){         // populate the created row
+                TestingBeliefs[rowframe].push_back(pbeliefsTest[i]);
             }
 
-            //Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j]. //i is the belief value number j is the testframe
+            // Compare the beliefs for training and testing for computing Euclidean Distance
+            float sumCurrent, cumulSum, euclidDist;
+            for(int row=0; row<=rowframe; row++){
 
-            float sum, sumCurrent;
-            for(int testframe = trainingFrame; testframe<=frameCount ; testframe++){
-
-                for(int i=0;i<=size;i++){
-                    sumCurrent = pow( (TrainingBeliefs[i]-TestingBeliefs[i][testframe]), 2);
-                    //cout<< "Training Belief " << i <<" : "<< TrainingBeliefs[i] << endl;
-                    //cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
-                    if (i==0) sum=sumCurrent;
-                    else sum=sum+sumCurrent;
+                for(int i=0; i<=size; i++){
+                    sumCurrent=pow( (TrainingBeliefs[i]-TestingBeliefs[row][i]),2);
+                    if(i==0)cumulSum=sumCurrent;
+                    else cumulSum=cumulSum+sumCurrent;
                 }
-                sum=sqrt(sum);
-                cout << testframe <<" Euclidean Distance: " << sum << endl;
-
+                euclidDist=sqrt(cumulSum);
             }
-            // Swapping with an empty dummy vector frees up memory. TestFrame.clear() doesnt.
-            vector<float>dummyvector;
-            TestFrame.swap(dummyvector);
+
+            // Calculate similarities of Euclidean Distance. 0 if not similar at all 1 if similar.
+            float euclidSim=1/(1+euclidDist);
+
+            cout << euclidSim << endl;
+
+            rowframe++;
         }
+
+//        else if(frameCount==trainingFrame)
+//        {
+//            // Stop training
+//            //network->isTraining(false);
+//            for (int i=0;i<nLayers;i++) network->setLayerIsTraining(i, false);
+
+//            // Extract features/belief of training scene
+//            pbeliefsTrain = featureExtractor->getBeliefs();
+//            featureExtractor->writeBeliefToMat("TrainingOutput.txt");
+
+//            // Assinging beliefs into local vector
+//            for(int i=0;i<=size;i++){
+//                TrainingBeliefs.push_back(pbeliefsTrain[i]);
+//            }
+//        }
+
+//        else if (frameCount>trainingFrame)
+//        {
+
+//            // Extract features of testing scene
+//            pbeliefsTest = featureExtractor->getBeliefs();
+//            featureExtractor->writeBeliefToMat("TestingOutput.txt");
+
+//            // Assinging beliefs into local vector
+//            for(int i=0;i<=size;i++){
+//                TestFrame.push_back(pbeliefsTest[i]);
+//                TestingBeliefs.push_back(TestFrame);  // TestFrame starts from 0
+//            }
+
+//            //Compare beliefs which are stored in a multidimentional vector. eg. TestingBeliefs[i][j]. //i is the belief value number j is the testframe
+
+//            float sum, sumCurrent;
+//            for(int testframe = trainingFrame; testframe<=frameCount ; testframe++){
+
+//                for(int i=0;i<=size;i++){
+//                    sumCurrent = pow( (TrainingBeliefs[i]-TestingBeliefs[i][testframe]), 2);
+//                    //cout<< "Training Belief " << i <<" : "<< TrainingBeliefs[i] << endl;
+//                    //cout<< "Testing Belief  " << i <<" : "<< TestingBeliefs[i][testframe] << " Testing Frame : " << testframe << endl;
+//                    if (i==0) sum=sumCurrent;
+//                    else sum=sum+sumCurrent;
+//                }
+//                sum=sqrt(sum);
+//                cout << testframe <<" Euclidean Distance: " << sum << endl;
+
+//            }
+//            // Swapping with an empty dummy vector frees up memory. TestFrame.clear() doesnt.
+//            vector<float>dummyvector;
+//            TestFrame.swap(dummyvector);
+//        }
 
 
         //        if (framecount==10)
@@ -328,8 +382,7 @@ void processWebcam()
         float *pbeliefsTrain;
         float *pbeliefsTest;
 
-        int trainingFrame= 1000;  //70-90 is ok // number of frames for training
-
+        int trainingFrame= 60;  //70-90 is ok // number of frames for training
         uint size = featureExtractor->getOutputSize();
 
         //feed the video into the destin algorithm
@@ -508,8 +561,8 @@ int main(int argc, char ** argv)
 
     try
     {
-        //process(robotIp);
-        processWebcam();
+        process(robotIp);
+        //processWebcam();
     }
     catch (const AL::ALError& e)
     {
