@@ -18,6 +18,10 @@ CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/Desktop/destin/Des
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/Desktop/destin/Destin/DavisDestin/include/node.h
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alerror/alerror.h
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alerror/config.h
+CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/almotionproxy.h
+CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/almotionproxyposthandler.h
+CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/alrobotpostureproxy.h
+CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/alrobotpostureproxyposthandler.h
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/altexttospeechproxy.h
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/altexttospeechproxyposthandler.h
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/alvideodeviceproxy.h

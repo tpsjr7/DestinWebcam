@@ -19,6 +19,10 @@ CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o
  /home/dickson/Desktop/destin/Destin/DavisDestin/include/node.h
  /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alerror/alerror.h
  /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alerror/config.h
+ /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/almotionproxy.h
+ /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/almotionproxyposthandler.h
+ /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/alrobotpostureproxy.h
+ /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/alrobotpostureproxyposthandler.h
  /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/altexttospeechproxy.h
  /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/altexttospeechproxyposthandler.h
  /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/alvideodeviceproxy.h
