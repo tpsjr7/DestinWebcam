@@ -1,1 +1,1 @@
-/home/dickson/Desktop/DestinWebcam/CMakeFiles/DestinWebcam.dir
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/CMakeFiles/DestinWebcam.dir

@@ -5,21 +5,21 @@
       <Option title="DestinWebcam" />
       <Option makefile_is_custom="1" />
       <Option compiler="gcc" />
-      <Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\opt\;CMake Files\..\..\..\..\opt\ros\;CMake Files\..\..\..\..\opt\ros\groovy\;CMake Files\..\..\..\..\opt\ros\groovy\share\;CMake Files\..\..\..\..\opt\ros\groovy\share\OpenCV\;" />
+      <Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\opt\;CMake Files\..\..\..\..\..\opt\ros\;CMake Files\..\..\..\..\..\opt\ros\groovy\;CMake Files\..\..\..\..\..\opt\ros\groovy\share\;CMake Files\..\..\..\..\..\opt\ros\groovy\share\OpenCV\;" />
       <Build>
       <Target title="all">
-         <Option working_dir="/home/dickson/Desktop/DestinWebcam" />
+         <Option working_dir="/home/dickson/Desktop/DeSTINonNao/DestinWebcam" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 all" />
-            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 all" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="DestinWebcam">
-         <Option output="/home/dickson/Desktop/DestinWebcam/DestinWebcam" prefix_auto="0" extension_auto="0" />
-         <Option working_dir="/home/dickson/Desktop/DestinWebcam" />
+         <Option output="/home/dickson/Desktop/DeSTINonNao/DestinWebcam/DestinWebcam" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/dickson/Desktop/DeSTINonNao/DestinWebcam" />
          <Option object_output="./" />
          <Option type="1" />
          <Option compiler="gcc" />
@@ -29,15 +29,15 @@
             <Add directory="/home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include" />
          </Compiler>
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 DestinWebcam" />
-            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 DestinWebcam" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="DestinWebcam/fast">
-         <Option output="/home/dickson/Desktop/DestinWebcam/DestinWebcam" prefix_auto="0" extension_auto="0" />
-         <Option working_dir="/home/dickson/Desktop/DestinWebcam" />
+         <Option output="/home/dickson/Desktop/DeSTINonNao/DestinWebcam/DestinWebcam" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/dickson/Desktop/DeSTINonNao/DestinWebcam" />
          <Option object_output="./" />
          <Option type="1" />
          <Option compiler="gcc" />
@@ -47,43 +47,43 @@
             <Add directory="/home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include" />
          </Compiler>
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 DestinWebcam/fast" />
-            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 DestinWebcam/fast" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="edit_cache">
-         <Option working_dir="/home/dickson/Desktop/DestinWebcam" />
+         <Option working_dir="/home/dickson/Desktop/DeSTINonNao/DestinWebcam" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 edit_cache" />
-            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 edit_cache" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="rebuild_cache">
-         <Option working_dir="/home/dickson/Desktop/DestinWebcam" />
+         <Option working_dir="/home/dickson/Desktop/DeSTINonNao/DestinWebcam" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 rebuild_cache" />
-            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 rebuild_cache" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       </Build>
-      <Unit filename="/home/dickson/Desktop/DestinWebcam/DestinWebcam.cpp">
+      <Unit filename="/home/dickson/Desktop/DeSTINonNao/DestinWebcam/DestinWebcam.cpp">
       </Unit>
-      <Unit filename="/home/dickson/Desktop/DestinWebcam/CMakeLists.txt">
+      <Unit filename="/home/dickson/Desktop/DeSTINonNao/DestinWebcam/CMakeLists.txt">
           <Option virtualFolder="CMake Files\" />
       </Unit>
-      <Unit filename="/home/dickson/Desktop/DestinWebcam/../../../../opt/ros/groovy/share/OpenCV/OpenCVConfig-version.cmake">
-          <Option virtualFolder="CMake Files\..\..\..\..\opt\ros\groovy\share\OpenCV\" />
+      <Unit filename="/home/dickson/Desktop/DeSTINonNao/DestinWebcam/../../../../../opt/ros/groovy/share/OpenCV/OpenCVConfig-version.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\opt\ros\groovy\share\OpenCV\" />
       </Unit>
-      <Unit filename="/home/dickson/Desktop/DestinWebcam/../../../../opt/ros/groovy/share/OpenCV/OpenCVConfig.cmake">
-          <Option virtualFolder="CMake Files\..\..\..\..\opt\ros\groovy\share\OpenCV\" />
+      <Unit filename="/home/dickson/Desktop/DeSTINonNao/DestinWebcam/../../../../../opt/ros/groovy/share/OpenCV/OpenCVConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\opt\ros\groovy\share\OpenCV\" />
       </Unit>
    </Project>
 </CodeBlocks_project_file>

@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/dickson/Desktop/DestinWebcam
+CMAKE_SOURCE_DIR = /home/dickson/Desktop/DeSTINonNao/DestinWebcam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/dickson/Desktop/DestinWebcam
+CMAKE_BINARY_DIR = /home/dickson/Desktop/DeSTINonNao/DestinWebcam
 
 # Include any dependencies generated for this target.
 include CMakeFiles/DestinWebcam.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/DestinWebcam.dir/flags.make
 
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: CMakeFiles/DestinWebcam.dir/flags.make
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o: DestinWebcam.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/dickson/Desktop/DestinWebcam/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/dickson/Desktop/DeSTINonNao/DestinWebcam/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o -c /home/dickson/Desktop/DestinWebcam/DestinWebcam.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o -c /home/dickson/Desktop/DeSTINonNao/DestinWebcam/DestinWebcam.cpp
 
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/dickson/Desktop/DestinWebcam/DestinWebcam.cpp > CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/dickson/Desktop/DeSTINonNao/DestinWebcam/DestinWebcam.cpp > CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.i
 
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/dickson/Desktop/DestinWebcam/DestinWebcam.cpp -o CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/dickson/Desktop/DeSTINonNao/DestinWebcam/DestinWebcam.cpp -o CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.s
 
 CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o.requires:
 .PHONY : CMakeFiles/DestinWebcam.dir/DestinWebcam.cpp.o.requires
@@ -115,6 +115,6 @@ CMakeFiles/DestinWebcam.dir/clean:
 .PHONY : CMakeFiles/DestinWebcam.dir/clean
 
 CMakeFiles/DestinWebcam.dir/depend:
-	cd /home/dickson/Desktop/DestinWebcam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/dickson/Desktop/DestinWebcam /home/dickson/Desktop/DestinWebcam /home/dickson/Desktop/DestinWebcam /home/dickson/Desktop/DestinWebcam /home/dickson/Desktop/DestinWebcam/CMakeFiles/DestinWebcam.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/dickson/Desktop/DeSTINonNao/DestinWebcam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/dickson/Desktop/DeSTINonNao/DestinWebcam /home/dickson/Desktop/DeSTINonNao/DestinWebcam /home/dickson/Desktop/DeSTINonNao/DestinWebcam /home/dickson/Desktop/DeSTINonNao/DestinWebcam /home/dickson/Desktop/DeSTINonNao/DestinWebcam/CMakeFiles/DestinWebcam.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/DestinWebcam.dir/depend
 

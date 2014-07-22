@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/dickson/Desktop/DestinWebcam/DestinWebcam.cpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/DestinWebcam.cpp
 opencv2/core/core.hpp
 -
 opencv2/highgui/highgui.hpp
@@ -14,21 +14,21 @@ opencv2/highgui/highgui.hpp
 opencv/cv.h
 -
 opencv2/opencv.hpp
-/home/dickson/Desktop/DestinWebcam/opencv2/opencv.hpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/opencv2/opencv.hpp
 opencv2/objdetect/objdetect.hpp
-/home/dickson/Desktop/DestinWebcam/opencv2/objdetect/objdetect.hpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/opencv2/objdetect/objdetect.hpp
 opencv2/imgproc/imgproc.hpp
-/home/dickson/Desktop/DestinWebcam/opencv2/imgproc/imgproc.hpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/opencv2/imgproc/imgproc.hpp
 opencv2/contrib/contrib.hpp
-/home/dickson/Desktop/DestinWebcam/opencv2/contrib/contrib.hpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/opencv2/contrib/contrib.hpp
 opencv2/ml/ml.hpp
-/home/dickson/Desktop/DestinWebcam/opencv2/ml/ml.hpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/opencv2/ml/ml.hpp
 opencv2/nonfree/features2d.hpp
-/home/dickson/Desktop/DestinWebcam/opencv2/nonfree/features2d.hpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/opencv2/nonfree/features2d.hpp
 opencv2/nonfree/features2d.hpp
-/home/dickson/Desktop/DestinWebcam/opencv2/nonfree/features2d.hpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/opencv2/nonfree/features2d.hpp
 opencv2/features2d/features2d.hpp
-/home/dickson/Desktop/DestinWebcam/opencv2/features2d/features2d.hpp
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/opencv2/features2d/features2d.hpp
 alproxies/altexttospeechproxy.h
 -
 alproxies/alvideodeviceproxy.h
@@ -37,6 +37,8 @@ alproxies/almotionproxy.h
 -
 alproxies/alrobotpostureproxy.h
 -
+alproxies/almemoryproxy.h
+-
 alvision/alimage.h
 -
 alvision/alvisiondefinitions.h
@@ -44,17 +46,17 @@ alvision/alvisiondefinitions.h
 alerror/alerror.h
 -
 DestinNetworkAlt.h
-/home/dickson/Desktop/DestinWebcam/DestinNetworkAlt.h
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/DestinNetworkAlt.h
 Transporter.h
-/home/dickson/Desktop/DestinWebcam/Transporter.h
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/Transporter.h
 stdio.h
-/home/dickson/Desktop/DestinWebcam/stdio.h
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/stdio.h
 unit_test.h
-/home/dickson/Desktop/DestinWebcam/unit_test.h
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/unit_test.h
 BeliefExporter.h
-/home/dickson/Desktop/DestinWebcam/BeliefExporter.h
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/BeliefExporter.h
 VideoSource.h
-/home/dickson/Desktop/DestinWebcam/VideoSource.h
+/home/dickson/Desktop/DeSTINonNao/DestinWebcam/VideoSource.h
 time.h
 -
 iostream
@@ -205,6 +207,22 @@ string
 -
 
 /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alerror/config.h
+
+/home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/almemoryproxy.h
+alproxies/almemoryproxyposthandler.h
+-
+alproxies/api.h
+-
+
+/home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/almemoryproxyposthandler.h
+boost/shared_ptr.hpp
+-
+alvalue/alvalue.h
+-
+string
+-
+vector
+-
 
 /home/dickson/naoqi/naoqi-sdk-1.14.5-linux32/include/alproxies/almotionproxy.h
 alproxies/almotionproxyposthandler.h

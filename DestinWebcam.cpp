@@ -14,6 +14,7 @@
 #include <alproxies/alvideodeviceproxy.h>
 #include <alproxies/almotionproxy.h>
 #include <alproxies/alrobotpostureproxy.h>
+#include <alproxies/almemoryproxy.h>
 #include <alvision/alimage.h>
 #include <alvision/alvisiondefinitions.h>
 #include <alerror/alerror.h>
@@ -44,7 +45,15 @@ using namespace AL;
 using namespace std;
 using namespace cv;
 
-const std::string robotIp="192.168.0.107";
+const std::string robotIp="192.168.0.105";
+
+bool plotSupportVectors=true;
+int numTrainingPoints=200;
+int numTestPoints=2000;
+int size=200;
+
+
+
 
 //*************************Destin Functions******************************************
 
@@ -398,24 +407,22 @@ void process2(const std::string & robotIp)
     // belief exporter
     BeliefExporter * featureExtractor=new BeliefExporter(*network, 5);
 
-    /* init destin network end */
-
-    int frameCount=0;
-
-    float *pbeliefsTrain;
-    float *pbeliefsTest;
-
-    int numTrainingFrame=70;  // number of frames for training
-
     uint size = featureExtractor->getOutputSize();
 
     // array init
     float testArray[size];
     float trainArray[size];
-    network->clearBeliefs();//clear network before start
+    network->clearBeliefs();
+
+    /* init destin network end */
+
+    int frameCount=0;
+    float *pbeliefsTrain;
+    float *pbeliefsTest;
+    int numTrainingFrame=90;  // number of frames for training
 
     /** Main loop. Exit when pressing ESC.*/
-    while ((char) cv::waitKey(30) != 27)
+    while ((char) waitKey(30) != 27)
     {
         ALValue img = camProxy.getImageRemote(clientName);
         imgHeader.data = (uchar*) img[6].GetBinary();
@@ -428,7 +435,7 @@ void process2(const std::string & robotIp)
 
         float * float_image=callImage(image);
 
-        // feed in destin
+        // feed image into destin
         network->doDestin(float_image);
 
         if (frameCount<numTrainingFrame){
@@ -461,11 +468,12 @@ void process2(const std::string & robotIp)
             // Compare the beliefs for training and testing for computing Euclidean Distance
             float sumCurrent, cumulSum, euclidDist;
             for(int i=0; i<=size; i++){
-                sumCurrent=pow( (trainArray[i]-testArray[i]),2);
+                sumCurrent= pow( (trainArray[i]-testArray[i]),2);
                 if(i==0)cumulSum=sumCurrent;
                 else cumulSum=cumulSum+sumCurrent;
             }
             euclidDist=sqrt(cumulSum);
+            //cout << euclidDist << endl;
 
             // Calculate similarities of Euclidean Distance. 0 if not similar at all 1 if similar.
             float euclidSim=1/(1+euclidDist);
@@ -480,6 +488,8 @@ void process2(const std::string & robotIp)
                 // robot sit down
                 posture.goToPosture("Crouch", 0.5f);
             }
+
+
         }
         frameCount++;
         cv::imshow("Scene", image);
@@ -638,7 +648,6 @@ void processWebcam()
     delete network;
 }
 
-
 void processWebcam2()  // implementation without vectors but array
 {
     //VideoSource vs(false, "./Various.avi");
@@ -661,7 +670,10 @@ void processWebcam2()  // implementation without vectors but array
     float *pbeliefsTrain;
     float *pbeliefsTest;
     int numTrainingFrame= 70;              //70-90 is ok // number of frames for training
+    int numTrainingFrame2=140;
     uint size = featureExtractor->getOutputSize();
+
+
 
     // array init
     float testArray[size];
@@ -697,6 +709,7 @@ void processWebcam2()  // implementation without vectors but array
 
         else if (frameCount>numTrainingFrame)
         {
+
             // Extract features of testing scene
             pbeliefsTest = featureExtractor->getBeliefs();
 
@@ -721,6 +734,7 @@ void processWebcam2()  // implementation without vectors but array
     }
     delete network;
 }
+
 
 void showImages(const std::string& robotIp){
     /** Create a proxy to ALVideoDevice on the robot.*/
@@ -771,24 +785,40 @@ void showImages(const std::string& robotIp){
 }
 
 
+
+
+
 //***********************************Main loop*******************************************
 
 
 int main(int argc, char ** argv)
 {
+    //    int m[2] = { 7,12 };
+    //    int n[2] = { 9,10 };
+    //    Mat M = Mat(1, 2, CV_64F, m);
+    //    Mat N = Mat(1, 2, CV_64F, n);
+    //    Mat V;
 
+    //    vconcat(M,N,V);
+
+    //    cout << V.at<int>(1,0);
+
+    //    while(1){
+    //        ALMemoryProxy joint (robotIp, 9559);
+    //        cout<< joint.getData("Device/SubDeviceList/LShoulderPitch/Position/Sensor/Value") << endl;
+    //    }
     try
     {
-        process2(robotIp);
-        //processWebcam2();
+        //process2(robotIp);
+        processWebcam2();
+        //SVMImage();
     }
     catch (const AL::ALError& e)
     {
         std::cerr << "Caught exception " << e.what() << std::endl;
     }
-
-
     return 0;
+
 }
 
 
